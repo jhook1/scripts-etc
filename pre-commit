@@ -1,0 +1,73 @@
+#!/bin/sh
+
+# Config variable to determine whether additional messages should be printed
+verbose=0
+
+if [ "$verbose" -eq 1 ]; then echo "pre-commit: Start"; fi
+
+# Determines whether commits should be aborted at the end of the script
+# Setting to 1 here will always abort the commit (useful for debugging)
+# May also be set during execution (if changes to installed hooks staged)
+do_abort=0
+
+test_file_write=0
+if [ "$test_file_write" -eq 1 ]; then
+	touch pre-commit.log.txt
+	echo "pre-commit executed" >> pre-commit.log.txt
+fi
+
+# If staged filename excluded by .gitignore then remove from staging
+echo "Checking for ignored files in staging..."
+ignored_files=$(git diff --name-only --cached | git check-ignore --no-index --stdin)
+echo "${ignored_files}" | while read filename; do
+	if [ -e "$filename" ]; then
+		echo "$filename is ignored!"
+		git restore --staged "$filename"
+	fi
+done
+
+# Iterate over installed hooks directory, checking for changes to installed hook executables
+installed_hooks_dir=".git/hooks/"
+tracked_hooks_dir="git-hooks/"
+echo "Checking for changes to installed hooks..."
+while read fileroot; do
+	if [ "$verbose" -eq 1 ]; then
+		echo "Installed: $installed_hooks_dir$fileroot"
+		echo "Tracked: $tracked_hooks_dir$fileroot"
+	fi
+
+	if [ -e "$tracked_hooks_dir$fileroot" ]; then
+		# If differences between installed and tracked hooks then merge changes from installed to tracked
+		if ! git diff --quiet --no-index "$installed_hooks_dir$fileroot" "$tracked_hooks_dir$fileroot"; then
+			echo "Changes detected for installed $installed_hooks_dir$fileroot. Updating tracked file..."
+			git merge-file "$tracked_hooks_dir$fileroot" "$tracked_hooks_dir$fileroot" "$installed_hooks_dir$fileroot"
+			echo "Please review changes to tracked hook files before committing again."
+			do_abort=1
+		fi
+	else
+		if [ -e "$installed_hooks_dir$fileroot" ]; then
+			# If installed hook does not have a corresponding tracked file then copy script from installed to tracked dir
+			echo "No tracked file corresponding to $fileroot. Copying from installed hooks dir..."
+			cp "$installed_hooks_dir$fileroot" "$tracked_hooks_dir"
+			echo "Please review changes to tracked hook files before committing again."
+			do_abort=1
+		fi
+	fi
+# This piping form used to ensure the while loop is executed in the main script shell context
+# Enables the do_abort variable to be changed within the loop
+done <<< $(ls $installed_hooks_dir | grep -E ^[^.]+$)
+
+# If no files left in staging then abort commit
+if ! [ "$(git diff --name-only --cached)" ]; then
+	echo "No files left to commit. Aborting..."
+	exit 1
+fi
+
+if [ "$do_abort" -eq 1 ]; then
+	echo "Aborting commit..."
+	exit 1
+else
+	echo "Committing..."
+	echo ""
+	exit 0
+fi

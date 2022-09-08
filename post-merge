@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# Config variable to determine whether additional messages should be printed
+verbose=0
+
+if [ "$verbose" -eq 1 ]; then echo "post-merge: Start"; fi
+
+# Config variable to abort remaining script execution
+# Cannot affect the outcome of a merge
+do_abort=0
+if [ "$do_abort" -eq 1 ]; then exit 1; fi
+
+# Extract root hook executable names from tracked files changed by merge action and iterate over them
+echo "Checking for new updates to tracked hooks..."
+installed_hooks_dir=".git/hooks/"
+tracked_hooks_dir="git-hooks\/"
+git diff-tree -r --name-only ORIG_HEAD HEAD | grep -E ^"$tracked_hooks_dir".+ | sed -E "s/^($tracked_hooks_dir)// ; s/(\.[^.\/]+$)//" | while read fileroot; do
+	if [ -e "$tracked_hooks_dir$fileroot" ]; then
+		if [ "$verbose" -eq 1 ]; then
+			echo "Installed: $installed_hooks_dir$fileroot"
+			echo "Tracked: $tracked_hooks_dir$fileroot"
+		fi
+
+		# If the corresponding file exists in the installed hooks dir and it differs from the new tracked file then merge changes to the installed hook
+		if [ -e "$installed_hooks_dir$fileroot" ]; then
+			if ! git diff --quiet --no-index "$installed_hooks_dir$fileroot" "$tracked_hooks_dir$fileroot"; then
+				echo "Changes detected for tracked $tracked_hooks_dir$fileroot. Updating installed file..."
+				git merge-file "$installed_hooks_dir$fileroot" "$installed_hooks_dir$fileroot" "$tracked_hooks_dir$fileroot"
+			fi
+		else
+			# If the tracked hook file does not have a corrresponding installed script then copy the tracked script into the installed dir
+			echo "No installed hook corresponding to $fileroot. Copying from tracked hooks dir..."
+			cp "$tracked_hooks_dir$fileroot" "$installed_hooks_dir"
+		fi
+	else
+		if [ "$verbose" -eq 1 ]; then echo "$fileroot not found in tracked hooks dir! Ignoring..."; fi
+	fi
+done

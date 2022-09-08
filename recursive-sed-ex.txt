@@ -1,0 +1,1 @@
+grep -Zl 'On' -r . --include='*.cs' | xargs -0 sed -i -E 's/On(\S+)Event/On\1/g'
