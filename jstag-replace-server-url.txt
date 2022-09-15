@@ -1,8 +1,8 @@
 <script type="text/javascript">
 	// Retrieve server relative URL from config for client.
 	// Can execute via [string literal].replace(/(\.\.\/)+/g, typeof getServerUrl === 'undefined' ? '$&' : getServerUrl())
-	// Replaces file relative paths (../) with server relative path (/Apps/Portal/..) if this function is defined.
+	// Replaces file relative paths (../) with server relative path if this function is defined.
 	function getServerUrl() {
-		return '<%=ResolveUrl(ConfigurationManager.AppSettings("PVS"))%>';
+		return '<%=ResolveUrl(ConfigurationManager.AppSettings("<KEY>"))%>';
 	}
 </script>
