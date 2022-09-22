@@ -1,3 +1,5 @@
+param([String[]]$input_files,[String]$input_path,[String[]]$props="Text","Title","aria-label","placeholder","HeaderText","ToolTip","AlternateText",[String[]]$cultures="es-MX",[Boolean]$strip_props=1)
+
 # Return the markup (.aspx) file corresponding to the input file
 function GetMarkupFile([String]$filename) {
 	if($filename.EndsWith(".vb")) {
@@ -156,6 +158,13 @@ function GenerateResource([String[]]$input_files, [String[]]$props, [Boolean]$st
 		}
 	}
 }
+
+$in_files_arr = @()
+$in_files_arr = $input_files
+if($input_path){
+	Get-ChildItem -Path $input_path -Recurse -Include "*.aspx*","*.master*" -Exclude "*.resx","*.designer.*","*.resources" | ForEach-Object { $in_files_arr += $_.FullName }
+}
+GenerateResource -input_files $in_files_arr -props $props -strip_props $strip_props -cultures $cultures
 
 # $in_files_arr = @()
 # Get-ChildItem -Path "folder/*" -Recurse -Include "*.aspx*","*.master*" -Exclude "*.resx","*.designer.*","*.resources" | ForEach-Object { $in_files_arr += $_.FullName}
