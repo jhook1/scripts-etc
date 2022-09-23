@@ -1,4 +1,4 @@
-param([String[]]$input_files,[String]$input_path,[String[]]$props="Text","Title","aria-label","placeholder","HeaderText","ToolTip","AlternateText",[String[]]$cultures="es-MX",[Boolean]$strip_props=1)
+param([String[]]$input_files,[String]$input_path,[String[]]$input_props="Text","Title","aria-label","placeholder","HeaderText","ToolTip","AlternateText",[Boolean]$strip_props=1,[String[]]$input_cultures="es-MX")
 
 # Return the markup (.aspx) file corresponding to the input file
 function GetMarkupFile([String]$filename) {
@@ -46,9 +46,9 @@ function CreateFileFromTemplate([String]$template_file, [string]$target_file, [r
 }
 
 # Create target resource files for given locales and capture their XML content
-function CreateTargetFiles([String]$template_file, [ref]$xml_map, [String[]]$input_files, [String[]]$cultures) {
+function CreateTargetFiles([String]$template_file, [ref]$xml_map, [String[]]$files_list, [String[]]$cultures) {
 	$template_file = "ResourceTemplate.resx"
-	$input_files | ForEach-Object {
+	$files_list | ForEach-Object {
 		$xml_docs=@()
 		
 		$target_file = GetResourceFilename -input_file $_
@@ -77,12 +77,12 @@ function StripCapturedProps([ref]$match_set) {
 }
 
 # Iterate over given properties, extracting resource tags and corresponding properties from the input aspx files
-function ExtractResourceInfo([String[]]$input_files, [String[]]$props, [Boolean]$strip_props) {
+function ExtractResourceInfo([String[]]$files_list, [String[]]$props, [Boolean]$do_strip_props) {
 	$props | ForEach-Object {
-		$m = Select-String -Path $input_files -Pattern "\b(?<PropVal>(?<Prop>$_)=`"(?<Value>[^`"]*)`").*meta:resourcekey=`"(?<Key>[^`"]*)`""
+		$m = Select-String -Path $files_list -Pattern "\b(?<PropVal>(?<Prop>$_)=`"(?<Value>[^`"]*)`").*meta:resourcekey=`"(?<Key>[^`"]*)`""
 		return $m
 	}
-	$m = Select-String -Path $input_files -Pattern "GetLocalResourceObject\(`"(?<Dynamic>[^`"]*)`"\)"
+	$m = Select-String -Path $files_list -Pattern "GetLocalResourceObject\(`"(?<Dynamic>[^`"]*)`"\)"
 	return $m
 }
 
@@ -137,11 +137,11 @@ function CreateResourceNode([ref]$xml_doc_list, [ref]$match_obj) {
 }
 
 # Driver function
-function GenerateResource([String[]]$input_files, [String[]]$props, [Boolean]$strip_props, [String[]]$cultures) {
+function GenerateResource([String[]]$files_list, [String[]]$props, [Boolean]$do_strip_props, [String[]]$cultures) {
 	$xml_doc_map = @{}
-	CreateTargetFiles -xml_map ([ref]$xml_doc_map) -input_files $input_files -cultures $cultures
-	$match_set = ExtractResourceInfo -input_files $input_files -props $props -strip_props $strip_props
-	if($strip_props) {
+	CreateTargetFiles -xml_map ([ref]$xml_doc_map) -files_list $files_list -cultures $cultures
+	$match_set = ExtractResourceInfo -files_list $files_list -props $props -do_strip_props $do_strip_props
+	if($do_strip_props) {
 		StripCapturedProps -match_set ([ref]$match_set)
 	}
 	for($i=0; $i -lt $match_set.Matches.Length; $i++) {
@@ -149,7 +149,7 @@ function GenerateResource([String[]]$input_files, [String[]]$props, [Boolean]$st
 		$xml_map_key = GetMarkupFile -filename $file_path
 		CreateResourceNode -xml_doc_list ([ref]$xml_doc_map[$xml_map_key]) -match_obj ([ref]$match_set.Matches[$i])
 	}
-	$input_files | ForEach-Object {
+	$files_list | ForEach-Object {
 		$source_file = Resolve-Path -Path $_
 		$source_file = GetMarkupFile -filename $source_file.Path
 		for($i=0; $i -lt $xml_doc_map[$source_file].Length; $i++) {
@@ -159,12 +159,12 @@ function GenerateResource([String[]]$input_files, [String[]]$props, [Boolean]$st
 	}
 }
 
-$in_files_arr = @()
-$in_files_arr = $input_files
+$files_arr = @()
+$files_arr = $input_files
 if($input_path){
-	Get-ChildItem -Path $input_path -Recurse -Include "*.aspx*","*.master*" -Exclude "*.resx","*.designer.*","*.resources" | ForEach-Object { $in_files_arr += $_.FullName }
+	Get-ChildItem -Path $input_path -Recurse -Include "*.aspx*","*.master*" -Exclude "*.resx","*.designer.*","*.resources" | ForEach-Object { $files_arr += $_.FullName }
 }
-GenerateResource -input_files $in_files_arr -props $props -strip_props $strip_props -cultures $cultures
+GenerateResource -files_list $files_arr -props $input_props -do_strip_props $strip_props -cultures $input_cultures
 
 # $in_files_arr = @()
 # Get-ChildItem -Path "folder/*" -Recurse -Include "*.aspx*","*.master*" -Exclude "*.resx","*.designer.*","*.resources" | ForEach-Object { $in_files_arr += $_.FullName}
