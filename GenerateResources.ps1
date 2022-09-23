@@ -1,4 +1,4 @@
-param([String[]]$input_files,[String]$input_path,[String[]]$input_props="Text","Title","aria-label","placeholder","HeaderText","ToolTip","AlternateText",[Boolean]$strip_props=1,[String[]]$input_cultures="es-MX")
+param([String[]]$input_files, [String]$input_path, [String[]]$input_props="Text","Title","aria-label","placeholder","HeaderText","ToolTip","AlternateText", [Boolean]$strip_props=1, [String[]]$input_cultures="es-MX")
 
 # Return the markup (.aspx) file corresponding to the input file
 function GetMarkupFile([String]$filename) {
