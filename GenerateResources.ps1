@@ -102,7 +102,8 @@ function CreateResourceNode([ref]$xml_doc_list, [ref]$match_obj) {
 					$retval = $new_elem.SetAttribute("name", $resource_key)
 					$retval = $new_elem.SetAttribute("xml:space","preserve")
 					
-					$value_text = if($i -eq 0) {$match_obj.Value.Groups["Value"].Value} else {""}
+					#$value_text = if($i -eq 0) {$match_obj.Value.Groups["Value"].Value} else {""}
+					$value_text = $match_obj.Value.Groups["Value"].Value
 					[xml]$value_doc = "<value>" + $value_text + "</value>"
 					$retval = $new_elem.AppendChild($xml_doc.ImportNode($value_doc.DocumentElement,1))
 					
