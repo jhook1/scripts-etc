@@ -80,7 +80,7 @@ function StripCapturedProps([ref]$match_set) {
 function ExtractResourceInfo([String[]]$files_list, [String[]]$props, [Boolean]$do_strip_props) {
 	$props | ForEach-Object {
 		$m = Select-String -Path $files_list -Pattern "\b(?<PropVal>(?<Prop>$_)=`"(?<Value>[^`"]*)`").*meta:resourcekey=`"(?<Key>[^`"]*)`""
-		return $m
+		return $m # There is your problem, or at least part of it (Quote from earlier commit: "I'm not actually sure how this return statement works here but it does" ... alas it does not)
 	}
 	$m = Select-String -Path $files_list -Pattern "GetLocalResourceObject\(`"(?<Dynamic>[^`"]*)`"\)"
 	return $m
@@ -148,6 +148,9 @@ function GenerateResource([String[]]$files_list, [String[]]$props, [Boolean]$do_
 		echo "Target files created."
 	}
 	$match_set = ExtractResourceInfo -files_list $files_list -props $props -do_strip_props $do_strip_props
+	if($verbose) {
+		echo "$match_set"
+	}
 	if($do_strip_props) {
 		StripCapturedProps -match_set ([ref]$match_set)
 	}
