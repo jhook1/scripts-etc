@@ -1,4 +1,4 @@
-param([String[]]$input_files, [String]$input_path, [String[]]$input_props={"Text","Title","aria-label","placeholder","HeaderText","ToolTip","AlternateText"}, [Boolean]$strip_props=1, [String[]]$input_cultures="es-MX", [Boolean]$verbose=0)
+param([String[]]$input_files, [String]$input_path, [String[]]$input_props=@("Text","Title","aria-label","placeholder","HeaderText","ToolTip","AlternateText"), [Boolean]$strip_props=1, [String[]]$input_cultures=@("es-MX"), [Boolean]$verbose=0)
 
 # Return the markup (.aspx) file corresponding to the input file
 function GetMarkupFile([String]$filename) {
@@ -80,7 +80,7 @@ function StripCapturedProps([ref]$match_set) {
 function ExtractResourceInfo([String[]]$files_list, [String[]]$props, [Boolean]$do_strip_props) {
 	$props | ForEach-Object {
 		$m = Select-String -Path $files_list -Pattern "\b(?<PropVal>(?<Prop>$_)=`"(?<Value>[^`"]*)`").*meta:resourcekey=`"(?<Key>[^`"]*)`""
-		return $m # There is your problem, or at least part of it (Quote from earlier commit: "I'm not actually sure how this return statement works here but it does" ... alas it does not)
+		return $m
 	}
 	$m = Select-String -Path $files_list -Pattern "GetLocalResourceObject\(`"(?<Dynamic>[^`"]*)`"\)"
 	return $m
