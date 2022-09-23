@@ -1,4 +1,4 @@
-param([String[]]$input_files, [String]$input_path, [String[]]$input_props="Text","Title","aria-label","placeholder","HeaderText","ToolTip","AlternateText", [Boolean]$strip_props=1, [String[]]$input_cultures="es-MX")
+param([String[]]$input_files, [String]$input_path, [String[]]$input_props={"Text","Title","aria-label","placeholder","HeaderText","ToolTip","AlternateText"}, [Boolean]$strip_props=1, [String[]]$input_cultures="es-MX", [Boolean]$verbose=0)
 
 # Return the markup (.aspx) file corresponding to the input file
 function GetMarkupFile([String]$filename) {
@@ -138,8 +138,15 @@ function CreateResourceNode([ref]$xml_doc_list, [ref]$match_obj) {
 
 # Driver function
 function GenerateResource([String[]]$files_list, [String[]]$props, [Boolean]$do_strip_props, [String[]]$cultures) {
+	if($verbose) {
+		echo "Generating resources..."
+		echo "$files_list"
+	}
 	$xml_doc_map = @{}
 	CreateTargetFiles -xml_map ([ref]$xml_doc_map) -files_list $files_list -cultures $cultures
+	if($verbose) {
+		echo "Target files created."
+	}
 	$match_set = ExtractResourceInfo -files_list $files_list -props $props -do_strip_props $do_strip_props
 	if($do_strip_props) {
 		StripCapturedProps -match_set ([ref]$match_set)
@@ -160,7 +167,9 @@ function GenerateResource([String[]]$files_list, [String[]]$props, [Boolean]$do_
 }
 
 $files_arr = @()
-$files_arr = $input_files
+if($input_files) {
+	$files_arr = $input_files
+}
 if($input_path){
 	Get-ChildItem -Path $input_path -Recurse -Include "*.aspx*","*.master*" -Exclude "*.resx","*.designer.*","*.resources" | ForEach-Object { $files_arr += $_.FullName }
 }
