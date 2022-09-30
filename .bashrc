@@ -68,12 +68,12 @@ prompt_gen(){
 	# Start with the MSYS2 default prompt:
 	# Remove the newline preceding the prompt
 	# Remove the \n$SP prompt ending
-	local prompt_main_content=$(sed -E '
+	local prompt_root_content=$(sed -E '
 	s/\\n\\\[\\033\[32m\\]/ \\[\\e[32m\\]/ ;
 	s/\\n\$\ $//
 	' <<< "$MSYS2_PS1")
 	
-	PS1="$prompt_curr_time$prompt_main_content$(prompt_git_file_status)$prompt_custom_end"
+	PS1="$prompt_curr_time$prompt_root_content$(prompt_git_file_status)$prompt_custom_end"
 }
 
 # Enivronment variable to enable/disbale custom prompt
