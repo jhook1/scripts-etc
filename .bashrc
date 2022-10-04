@@ -32,8 +32,9 @@ prompt_git_file_status(){
 	local COLOR_WHITE_ON_RED_ESC='\\[\\e[97;101m\\]'
 	local COLOR_WHITE_ON_BLUE_ESC='\\[\\e[97;104m\\]'
 	local COLOR_NULL_ESC='\\[\\e[0m\\]'
+	local COLOR_BLACK_ON_BLACK="\[\e[30;40m\]"
 	local COLOR_YELLOW="\[\e[93m\]"
-	local COLOR_NULL="\[\e[00m\]"
+	local COLOR_NULL="\[\e[0m\]"
 	
 	# Check if the current directory is within a git repository
 	if [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]; then
@@ -51,7 +52,7 @@ prompt_git_file_status(){
 		>/dev/null`
 		
 		# Append a closing space to the final status section (UNTRK)
-		echo -n " $COLOR_NULL"
+		echo -n " $COLOR_BLACK_ON_BLACK|$COLOR_NULL"
 	fi
 }
 
