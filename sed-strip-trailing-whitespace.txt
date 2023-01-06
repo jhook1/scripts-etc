@@ -1,0 +1,1 @@
+echo -n "filepath" | xargs -0 sed -i -E 's/[[:space:]]*$//g'
