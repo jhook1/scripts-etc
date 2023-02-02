@@ -1,0 +1,54 @@
+<Category name="Environment_FontsAndColors" Category="{1EDA5DD4-927A-43a7-810E-7FD247D0DA1D}" Package="{DA9FB551-C724-11d0-AE1F-00A0C90FFFC3}" RegisteredName="Environment_FontsAndColors" PackageName="Visual Studio Environment Package">
+    <PropertyValue name="Version">2</PropertyValue>
+    <FontsAndColors Version="2.0">
+        <Theme Id="{871684C8-42EB-467D-821C-01FDD85FE81B}"/>
+        <Categories>
+            <Category GUID="{B36B0228-DBAD-4DB0-B9C7-2AD3E572010F}" FontName="Segoe UI" FontSize="9" CharSet="1" FontIsDefault="No">
+                <Items>
+                    <Item Name="Odd Row Items" Foreground="0x00000000" Background="0x00FFFFFF" BoldFont="No"/>
+                    <Item Name="Even Row Items" Foreground="0x00000000" Background="0x00FFFFFF" BoldFont="No"/>
+                    <Item Name="Not Downloaded" Foreground="0x00999999" Background="0x00FFFFFF" BoldFont="No"/>
+                    <Item Name="Target Only" Foreground="0x00000000" Background="0x00FFFFFF" BoldFont="No"/>
+                    <Item Name="Source Only" Foreground="0x00000000" Background="0x00FFFFFF" BoldFont="No"/>
+                    <Item Name="Identical content" Foreground="0x00000000" Background="0x00FFFFFF" BoldFont="No"/>
+                    <Item Name="Different content" Foreground="0x000014E5" Background="0x00FFFFFF" BoldFont="No"/>
+                </Items>
+            </Category>
+            <Category GUID="{75A05685-00A8-4DED-BAE5-E7A50BFA929A}" FontIsDefault="Yes">
+                <Items>
+                    <Item Name="HTML Comment" Foreground="0x02000000" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="method name" Foreground="0x00AADCDC" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="parameter name" Foreground="0x00FEDC9C" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="local name" Foreground="0x00FEDC9C" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="type parameter name" Foreground="0x00B0C94E" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="struct name" Foreground="0x0070CE5B" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="interface name" Foreground="0x0070CE5B" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="enum name" Foreground="0x0070CE5B" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="delegate name" Foreground="0x00B0C94E" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="class name" Foreground="0x00B0C94E" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="keyword - control" Foreground="0x00D69C56" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="string - verbatim" Foreground="0x00859DD6" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="String" Foreground="0x00859DD6" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="Keyword" Foreground="0x00727BFF" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="Comment" Foreground="0x00008000" Background="0x01000001" BoldFont="No"/>
+                </Items>
+            </Category>
+            <Category GUID="{FA937F7B-C0D2-46B8-9F10-A7A92642B384}" FontIsDefault="Yes">
+                <Items>
+                    <Item Name="Artboard Background" Foreground="0x02000000" Background="0x02000000"/>
+                </Items>
+            </Category>
+            <Category GUID="{E0187991-B458-4F7E-8CA9-42C9A573B56C}" FontIsDefault="Yes">
+                <Items>
+                    <Item Name="String" Foreground="0x00859DD6" Background="0x01000001" BoldFont="No"/>
+                    <Item Name="Comment" Foreground="0x00008000" Background="0x01000001" BoldFont="No"/>
+                </Items>
+            </Category>
+            <Category GUID="{FF349800-EA43-46C1-8C98-878E78F46501}" FontIsDefault="Yes">
+                <Items>
+                    <Item Name="Collapsible Text (Collapsed)" Foreground="0x00C0C0C0" Background="0x01000003" BoldFont="No"/>
+                </Items>
+            </Category>
+        </Categories>
+    </FontsAndColors>
+</Category>
