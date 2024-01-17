@@ -1,1 +1,4 @@
-SELECT TOP(100) name, create_date, modify_date FROM sys.objects WHERE type = 'P' ORDER BY modify_date DESC
+SELECT TOP(100) name, create_date, modify_date
+FROM sys.objects
+WHERE type = 'P'
+ORDER BY modify_date DESC
