@@ -11,7 +11,8 @@ Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
 function prompt_git_file_status() {
     $prompt_sep = " ~ "
     
-    if (!(Test-Path .git)) {
+    $in_git_repo = "$(git rev-parse --is-inside-work-tree 2>$null)"
+    if ($in_git_repo -ne "true" ) {
         return $prompt_sep
     }
 
