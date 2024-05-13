@@ -9,8 +9,10 @@ Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
 }
 
 function prompt_git_file_status() {
+    $prompt_sep = " ~ "
+    
     if (!(Test-Path .git)) {
-        return ""
+        return $prompt_sep
     }
 
     $curr_branch = "$(git branch --show-current)"
@@ -23,12 +25,19 @@ function prompt_git_file_status() {
         default { "|u+$([regex]::Matches($diff_count,"\d+\s+(\d+)").Groups[1].Value)-$([regex]::Matches($diff_count,"(\d+)\s+\d+").Groups[1].Value)" }
     }
 
-    return " ($curr_branch$upstream_diff)"
+    $diff_type_counts=$(git status -s | Tee-Object -Variable stat | &{
+        "A:$(($stat | select-string '^\s*A').count)";
+        "M:$(($stat | select-string '^\s*M').count)";
+        "D:$(($stat | select-string '^\s*D').count)";
+        "U:$(($stat | select-string '^\s*\?\?').count)";
+    })
+
+    return " ($curr_branch$upstream_diff)$prompt_sep$($diff_type_counts)"
 }
 
 function prompt() {
     $prompt_curr_time = "[$((Get-Date).ToString("HH:mm:ss tt"))]"
     $prompt_root_content = "$($executionContext.SessionState.Path.CurrentLocation)"
-    $prompt_custom_end = " $> "
+    $prompt_custom_end = "`n$> "
     return "$prompt_curr_time $prompt_root_content$(prompt_git_file_status)$prompt_custom_end"
 }
