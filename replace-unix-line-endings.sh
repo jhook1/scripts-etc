@@ -1,0 +1,1 @@
+git diff --name-only | xargs unix2dos
