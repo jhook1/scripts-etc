@@ -1,6 +1,7 @@
 # Custom aliases
 alias npp='start notepad++'
 alias sadge="echo '=('"
+alias gti="git"
 
 # Enable ls to automatically print colors
 # For use w/o bash -l (login session); improves performance
@@ -45,10 +46,10 @@ prompt_git_file_status(){
 		# Parse the output of git status and count the number of files for each captured status (ADD,MOD,DEL,UNTRK)
 		# Display each count preceded by the corresponding color and letter label
 		echo -n `git status -s | tee \
-		>(grep -c -E '^\s*\?\?' | sed -E s/^/$COLOR_NULL_ESC$COLOR_WHITE_ON_BLUE_ESC\ U:/) \
-		>(grep -c -E '^\s*D' | sed -E s/^/$COLOR_NULL_ESC$COLOR_WHITE_ON_RED_ESC\ D:/) \
-		>(grep -c -E '^\s*M' | sed -E s/^/$COLOR_NULL_ESC$COLOR_GREY_ON_YELLOW_ESC\ M:/) \
-		>(grep -c -E '^\s*A' | sed -E s/^/$COLOR_NULL_ESC$COLOR_WHITE_ON_GREEN_ESC\ A:/) \
+		>(rg -c --include-zero '^\s*\?\?' | sed -E s/^/$COLOR_NULL_ESC$COLOR_WHITE_ON_BLUE_ESC\ U:/) \
+		>(rg -c --include-zero '^\s*D' | sed -E s/^/$COLOR_NULL_ESC$COLOR_WHITE_ON_RED_ESC\ D:/) \
+		>(rg -c --include-zero '^\s*M' | sed -E s/^/$COLOR_NULL_ESC$COLOR_GREY_ON_YELLOW_ESC\ M:/) \
+		>(rg -c --include-zero '^\s*A' | sed -E s/^/$COLOR_NULL_ESC$COLOR_WHITE_ON_GREEN_ESC\ A:/) \
 		>/dev/null`
 		
 		# Append a closing space to the final status section (UNTRK)
