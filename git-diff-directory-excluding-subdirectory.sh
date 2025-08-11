@@ -1,0 +1,1 @@
+git diff --name-only -- 'directory path' ':!*/directory-to-ignore/*'

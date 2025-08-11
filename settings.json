@@ -1,0 +1,32 @@
+{
+    "window.autoDetectColorScheme": true,
+    "workbench.list.openMode": "doubleClick",
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "terminal.integrated.profiles.windows": {
+
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell"
+        },
+        "Command Prompt": {
+            "path": [
+                "${env:windir}\\Sysnative\\cmd.exe",
+                "${env:windir}\\System32\\cmd.exe"
+            ],
+            "args": [],
+            "icon": "terminal-cmd"
+        },
+        "Git Bash": {
+            "source": "Git Bash",
+            "path": "${env:programfiles}\\Git\\bin\\bash.exe",
+            "args": ["-i"]
+        }
+    },
+    "php.validate.executablePath": "C:\\php-7.4.32-Win32-vc15-x64\\php.exe",
+    "phpserver.phpPath": "C:\\php-7.4.32-Win32-vc15-x64\\php.exe",
+    "telemetry.telemetryLevel": "off",
+    "workbench.experimental.editSessions.autoResume": "off",
+    "files.hotExit": "off",
+    "window.restoreWindows": "none",
+    "workbench.experimental.settingsProfiles.enabled": true
+}

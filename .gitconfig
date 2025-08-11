@@ -1,0 +1,22 @@
+[user]
+	name =
+	email =
+[init]
+	defaultBranch = main
+[help]
+	autoCorrect = prompt
+[core]
+	pager = cat
+	hideDotFiles = false
+[color]
+	ui = auto
+[alias]
+	sync = !git pull && git push
+[merge]
+	renamelimit = 15000
+[diff]
+	renamelimit = 15000
+[push]
+	autoSetupRemote = true
+[rerere]
+	enabled = true

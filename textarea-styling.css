@@ -1,0 +1,96 @@
+textarea {
+  width: 100%;
+  vertical-align: top;
+}
+
+textarea {
+  margin: 0em;
+  -webkit-appearance: none;
+  tap-highlight-color:  rgba(255, 255, 255, 0);
+
+  padding: 11px 14px;
+  font-size: 1em;
+  background: white;
+  border: 1px solid black;
+  outline: none;
+  color: black;
+  border-radius: 4px;
+  box-shadow: 0em 0em 0em 0em transparent inset;
+  /*transition: @textAreaTransition;*/
+  font-size: 1em;
+  line-height: 1.2857;
+}
+.ui.form textarea:not([rows]) {
+  height: var(--textAreaHeight);
+  min-height: var(--textAreaMinHeight);
+  max-height: var(--textAreaMaxHeight);
+}
+
+/* ,
+.ui.form input[type="checkbox"] */
+.ui.form textarea {
+  vertical-align: var(--checkboxVerticalAlign);
+}
+
+textarea:focus {
+  border-color: #85B7D9;
+  /*box-shadow: @textAreaFocusBoxShadow;*/
+}
+
+textarea::-webkit-selection,
+input::-webkit-selection {
+  background-color: var(--inputHighlightBackground);
+  color: var(--inputHighlightColor);
+}
+textarea::-moz-selection,
+input::-moz-selection {
+  background-color: var(--inputHighlightBackground);
+  color: var(--inputHighlightColor);
+}
+textarea::selection,
+input::selection {
+  background-color: var(--inputHighlightBackground);
+  color: var(--inputHighlightColor);
+}
+
+:root {
+  --textAreaPadding: var(--inputVerticalPadding) var(--inputHorizontalPadding) -11px 14px;
+  --textAreaHeight: 12em;
+  --textAreaResize: vertical;
+  --textAreaLineHeight: 1.2857;
+  --textAreaMinHeight: 8em;
+  --textAreaMaxHeight: 24em;
+  --textAreaBackground: var(--inputBackground);
+  --textAreaBorder: var(--inputBorder);
+  --textAreaFontSize: var(--inputFontSize);
+  --textAreaTransition: var(--inputTransition);
+
+  --textAreaFocusBackground: var(--inputFocusBackground);
+  --textAreaFocusBorderColor: var(--inputFocusBorderColor);
+  --textAreaFocusColor: var(--inputFocusColor);
+  --textAreaFocusBoxShadow: var(--inputFocusBoxShadow);
+  --textAreaFocusBorderRadius: var(--inputFocusBorderRadius);
+
+  --inputFont: var(--pageFont);
+  --inputWidth: 100%;
+  --inputFontSize: 1em;
+  --inputPadding: (var(--inputVerticalPadding) + ((1em - var(--inputLineHeight)) / 2)) var(--inputHorizontalPadding);
+  --inputBorder: 1px solid var(--borderColor);
+  --inputBorderRadius: var(--absoluteBorderRadius);
+  --inputColor: var(--textColor);
+  --inputTransition:
+    color var(--defaultDuration) var(--defaultEasing),
+    border-color var(--defaultDuration) var(--defaultEasing)
+  ;
+  --inputBoxShadow: 0em 0em 0em 0em transparent inset;
+
+  --inputVerticalPadding   : var(--relative11px);
+  --inputHorizontalPadding : var(--relative14px);
+
+  --relative11px: unit( (11 / var(--emSize)), em);
+  --relative14px: unit( (14 / var(--emSize)), em);
+
+  --emSize: 14px;
+
+  --inputFocusBorderColor: var(--focusedFormBorderColor);
+}
